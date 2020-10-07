@@ -1,0 +1,53 @@
+= vim-iced-multi-session
+
+image:https://img.shields.io/badge/iced-plugin-blue.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgICAgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiCiAgICAgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiCiAgICAgdmlld0JveD0iMTAsMTAsODAsODAiPgogIDxwb2x5Z29uIGZpbGw9IiNCM0U1RkMiIHBvaW50cz0iNTAsMTAgMTAsNTAgMzAsNzAgMjAsNTAiLz4KICA8cG9seWdvbiBmaWxsPSIjOTBDQUY5IiBwb2ludHM9IjUwLDEwIDMwLDUwIDMwLDcwIDU1LDUwIi8+CiAgPHBvbHlnb24gZmlsbD0iIzgxRDRGQSIgcG9pbnRzPSI1MCwxMCA3MCw3MCA5MCw1MCIvPgogIDxwb2x5Z29uIGZpbGw9IiM2NEI1RjYiIHBvaW50cz0iNjAsNjAgMzAsNzAgNTAsOTAgNzAsNzAiLz4KPC9zdmc+Cg==["vim-iced plugin", link="https://github.com/liquidz/vim-iced"]
+
+https://github.com/liquidz/vim-iced[vim-iced] plugin to add support for multi session.
+
+vim-iced basically only supports connections to a single nREPL server.
+But if you use shadow-cljs, for example, to run backend and frontend nREPL server separately in the same project, you'll need to launch 2 vim/nvim to connect them. It's pain.
+
+This plugin supports multiple nREPL connections from a single vim/nvim by allowing you to store and switch between multiple nREPL sessions.
+
+WARNING: This plugin is very experimental.
+
+== Usage
+
+This plugin provides following commands, and these are added to the https://liquidz.github.io/vim-iced/#command_palette[command palette] automatically.
+
+|===
+|Command | Note
+
+| `:IcedMultiSessionNew`
+| Create a new session.
+
+| `:IcedMultiSessionNext`
+| Switch to the next session.
+If the current session is the last, switch to first one.
+
+| `:IcedMultiSessionList`
+| Display all session names.
+
+|===
+
+== Requirements
+
+* https://github.com/liquidz/vim-iced[vim-iced] (`2.3.2` or later)
+
+== Installation
+
+=== vim-plug
+
+[source,vim]
+----
+Plug 'liquidz/vim-iced', {'for': 'clojure'}
+Plug 'liquidz/vim-iced-multi-session', {'for': 'clojure'}
+----
+
+Execute `:PlugInstall` to install above plugins.
+
+== License
+
+Copyright (c) 2020 http://twitter.com/uochan[Masashi Iizuka]
+
+Distributed under the MIT License.
