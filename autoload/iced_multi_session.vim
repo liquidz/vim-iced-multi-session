@@ -6,8 +6,6 @@ let s:connection_index = 0
 let g:iced_multi_session#does_switch_session = get(g:, 'iced_multi_session#does_switch_session', v:false)
 let g:iced_multi_session#name_prefix = get(g:, 'iced_multi_session#name_prefix', 'new')
 
-call iced#hook#add('disconnected', {
-      \ 'type': 'function',
       \ 'exec': {_ -> iced_multi_session#disconnect()},
       \ })
 
@@ -190,6 +188,18 @@ endfunction
 call iced#hook#add('connect_prepared', {
      \ 'type': 'function',
      \ 'exec': funcref('s:filter_connected')})
+
+call iced#hook#add('connected', {
+     \ 'type': 'function',
+     \ 'exec': {_ -> iced_multi_session#rename(s:env_name())}})
+
+call iced#hook#add('session_switched', {
+      \ 'type': 'function',
+      \ 'exec': {_ -> iced_multi_session#rename(s:env_name())}})
+
+call iced#hook#add('disconnected', {
+      \ 'type': 'function',
+      \ 'exec': {_ -> iced_multi_session#disconnect()}})
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
