@@ -100,7 +100,21 @@ function! iced_multi_session#disconnect() abort
   endif
 endfunction
 
-function! iced_multi_session#connect() abort
+function! iced_multi_session#delete(...) abort
+  let index = get(a:, 1, s:connection_index)
+  let connection_count = len(s:connections)
+
+  if connection_count == 1
+    let s:connections = []
+    let s:connection_index = 0
+  elseif index < connection_count
+    unlet s:connections[index]
+    let s:connection_index = max([s:connection_index - 1, 0])
+    call s:switch(s:connection_index, v:false)
+  endif
+endfunction
+
+function! iced_multi_session#connect(...) abort
   call s:init()
 
   let connection_count = len(s:connections)
@@ -112,7 +126,11 @@ function! iced_multi_session#connect() abort
     call iced_multi_session#new(new_name)
   endif
 
-  exec ':IcedConnect'
+  let port = get(a:, 1, '')
+  let res = iced#repl#connect('nrepl', port)
+  if empty(res)
+    call iced_multi_session#delete()
+  endif
 endfunction
 
 function! s:auto_switching_session() abort
