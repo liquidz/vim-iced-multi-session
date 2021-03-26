@@ -154,5 +154,24 @@ function! iced_multi_session#rename(...)
   let s:connections[s:connection_index]['name'] = session_name
 endfunction
 
+function! s:already_connected(port) abort
+  for conn in s:connections
+    " c.f. https://github.com/liquidz/vim-iced/blob/3.0.3/autoload/iced/nrepl.vim#L7
+    if conn['conn']['port'] == a:port
+      return v:true
+    endif
+  endfor
+  return v:false
+endfunction
+
+function! s:filter_connected(candidates) abort
+  " e.g. candidte = {'label': 'nREPL', 'type': 'nrepl', 'port': 12345}
+  return filter(a:candidates, {_, v -> !s:already_connected(v['port'])})
+endfunction
+
+call iced#hook#add('connect_prepared', {
+     \ 'type': 'function',
+     \ 'exec': funcref('s:filter_connected')})
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
