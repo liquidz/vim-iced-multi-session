@@ -9,9 +9,20 @@ But if you use shadow-cljs, for example, to run backend and frontend nREPL serve
 
 This plugin supports multiple nREPL connections from a single vim/nvim by allowing you to store and switch between multiple nREPL sessions.
 
-WARNING: This plugin is very experimental.
-
 == Usage
+
+Basically, only you should do is executing `IcedConnect` command as before.
+
+vim-iced can select a REPL port to connect when Clojure project and ClojureScript project(e.g. shadow-cljs) REPLs are up.
+This plugin hooks the connection process, and manages multiple REPL connections.
+
+
+This plugin primarily targets connecting to 2 REPLs: Clojure and ClojureScript projects.
+With `g:iced_multi_session#does_switch_session` option, this plugin automatically switches the connecting REPL when the connecting REPL is not matched to the file extension on current buffer.
+
+If you'd like to connect to 3 or more REPLs or switch the REPL more strictly, `g:iced_multi_session#definitions` option is recommended.
+
+=== Commands
 
 This plugin provides following commands, and these are added to the https://liquidz.github.io/vim-iced/#command_palette[command palette] automatically.
 
@@ -29,25 +40,17 @@ If the current session is the last, switch to first one.
 | `:IcedMultiSessionList`
 | Display all session names.
 
-| `:IcedMultiSessionConnect`
-| Create a new session, and execute `:IcedConnect`. +
-This command is useful for projects which starts multiple nREPL servers.
+| `:IcedMultiSessionSwitch`
+| Swith to the selected session.
+
+| `:IcedMultiSessionRename`
+| Rename the current session name.
 
 |===
 
-=== Use `:IcedMultiSessionConnect` instead of `IcedConnect`
-[source,vim]
-----
-aug IcedMultiSessionSetting
-  au!
-  au FileType clojure nmap <silent><buffer> <Leader>_ <Plug>(iced_connect)
-  au FileType clojure nmap <silent><buffer> <Leader>' <Plug>(iced_multi_session_connect)
-aug END
-----
-
 === Options
 
-[cols="2,1,4"]
+[cols="2,1,4a"]
 |===
 | Option | Default | Note
 
@@ -59,11 +62,56 @@ aug END
 | `'new'`
 | The prefix string for new session name.
 
+| `g:iced_multi_session#definitions`
+| `[]`
+| Session definitions in current project. +
+This option should be defined with https://github.com/thinca/vim-localrc[vim-localrc].
+
+./path/to/your/project/root/.local.vimrc
+[source,vim]
+----
+let g:iced_multi_session#definitions = [
+    \ {'port_file': printf('%s/.nrepl-port', expand('<sfile>:p:h')),
+    \  'path': 'src/',
+    \  'name': 'web'},
+    \ {'port_file': printf('%s/.shadow-cljs/nrepl.port', expand('<sfile>:p:h')),
+    \  'path': 'src-cljs/',
+    \  'name': 'cljs'},
+    \ ]
+----
+
+|===
+
+=== Functions
+
+[cols="2,5a"]
+|===
+| Function | Note
+
+| `iced_multi_session#current`
+| Returns a string which describe current session status.
+e.g. `'NREPL(shadow-cljs)'`
+
+This function can be used for showing session status on statusline.
+The following is a example configuration for https://github.com/itchyny/lightline.vim[lightline.vim].
+[source,vim]
+----
+let g:lightline = {
+    \   'active': {
+    \     'left': [ ... ],
+    \     'right': [ ... ['iced_multi_session'], ... ]
+    \   },
+    \   'component_function': {
+    \     'iced_multi_session': 'iced_multi_session#current',
+    \   },
+    \ }
+----
+
 |===
 
 == Requirements
 
-* https://github.com/liquidz/vim-iced[vim-iced] (`2.3.2` or later)
+* https://github.com/liquidz/vim-iced[vim-iced] (`3.4.0` or later)
 
 == Installation
 

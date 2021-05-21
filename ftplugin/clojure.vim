@@ -3,8 +3,8 @@ if exists('g:loaded_iced_multi_session')
 endif
 
 if !exists('g:vim_iced_version')
-      \ || g:vim_iced_version < 20302
-  echoe 'iced-multi-session requires vim-iced v2.3.2 or later.'
+      \ || g:vim_iced_version < 30400
+  echoe 'iced-multi-session requires vim-iced v3.4.0 or later.'
   finish
 endif
 
@@ -18,12 +18,10 @@ command! IcedMultiSessionNext    call iced_multi_session#next()
 command! IcedMultiSessionList    call iced_multi_session#list()
 command! IcedMultiSessionSwitch  call iced_multi_session#switch()
 command! IcedMultiSessionRename  call iced_multi_session#rename()
-command! IcedMultiSessionConnect call iced_multi_session#connect()
 
 nnoremap <silent> <Plug>(iced_multi_session_new) :<C-u>IcedMultiSessionNew<CR>
 nnoremap <silent> <Plug>(iced_multi_session_next) :<C-u>IcedMultiSessionNext<CR>
 nnoremap <silent> <Plug>(iced_multi_session_list) :<C-u>IcedMultiSessionList<CR>
-nnoremap <silent> <Plug>(iced_multi_session_connect) :<C-u>IcedMultiSessionConnect<CR>
 
 if !exists('g:iced#palette')
   let g:iced#palette = {}
@@ -32,7 +30,6 @@ call extend(g:iced#palette, {
       \ 'MultiSessionNew': ':IcedMultiSessionNew',
       \ 'MultiSessionNext': ':IcedMultiSessionNext',
       \ 'MultiSessionList': ':IcedMultiSessionList',
-      \ 'MultiSessionConnect': ':IcedMultiSessionConnect',
       \ 'MultiSessionRename': ':IcedMultiSessionRename',
       \ 'MultiSessionSwitch': ':IcedMultiSessionSwitch',
       \ })
