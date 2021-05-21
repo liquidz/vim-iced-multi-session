@@ -3,8 +3,8 @@ if exists('g:loaded_iced_multi_session')
 endif
 
 if !exists('g:vim_iced_version')
-      \ || g:vim_iced_version < 30100
-  echoe 'iced-multi-session requires vim-iced v2.3.2 or later.'
+      \ || g:vim_iced_version < 30400
+  echoe 'iced-multi-session requires vim-iced v3.4.0 or later.'
   finish
 endif
 
